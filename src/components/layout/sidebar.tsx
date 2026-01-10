@@ -78,7 +78,7 @@ function SidebarContent() {
                 <div className="relative w-15 h-15 shrink-0">
                     <Image 
                         src="/logo-bg.png"  // <--- Asegúrate que el nombre coincida con el de la carpeta public
-                        alt="Logo"
+                        alt="Logo readyPOS"
                         fill
                         className="object-contain" // Esto asegura que el logo se vea entero sin recortarse
                         priority // Carga la imagen de inmediato
