@@ -1,5 +1,6 @@
 import React from "react";
 import Sidebar from "@/src/components/layout/sidebar";
+import Topbar from "@/src/components/layout/topbar";
 
 export default function CentroLayout({
     children,
@@ -7,35 +8,46 @@ export default function CentroLayout({
     children: React.ReactNode;
     }) {
     return (
-        // CONTENEDOR PRINCIPAL
-        // h-screen: Ocupa el 100% de la altura de la ventana
-        // flex: Pone los elementos uno al lado del otro
-        // bg-gray-50: Un fondo gris muy suavecito para toda la app (estilo moderno)
-        <div className="flex h-screen w-full bg-gray-50">
+        // 1. CONTENEDOR PADRE
+        // flex: Crea la disposición horizontal (Izquierda | Derecha)
+        // h-screen: Ocupa toda la pantalla y evita scroll en el cuerpo del navegador
+        // overflow-hidden: Importante para que no aparezcan doble barras de scroll
+        <div className="flex h-screen w-full bg-gray-50 overflow-hidden">
         
-        {/* 1. EL SIDEBAR (Izquierda) 
-            Ya tiene su propia lógica para ocultarse en móvil o quedarse fijo en PC.
-        */}
-        <Sidebar />
-        
-        {/* 2. ÁREA DE CONTENIDO (Derecha) 
-            flex-1: Toma todo el espacio sobrante
-            overflow-y-auto: Permite scroll independiente (si la tabla es larga, el sidebar no se mueve)
-        */}
-        <main className="flex-1 h-full overflow-y-auto transition-all duration-300 ease-in-out">
+            {/* 2. EL SIDEBAR (Izquierda Fija) */}
+            <Sidebar />
             
-            {/* Un contenedor interno para dar márgenes bonitos */}
-            {/* p-4 en móvil, p-8 en escritorio */}
-            <div className="min-h-full p-4 pt-24 md:p-8 md:pt-8">
+            {/* 3. COLUMNA DERECHA (El resto de la pantalla) 
+                flex-1: Toma todo el ancho disponible restando el sidebar
+                flex-col: Organiza sus hijos verticalmente (Primero Topbar, luego Main)
+                min-w-0: Un truco de CSS para evitar que tablas grandes rompan el diseño
+            */}
+            <div className="flex-1 flex flex-col min-w-0">
                 
-                {/* Limitador de ancho (max-w-7xl) para que en pantallas gigantes 
-                    (iMac, monitores 4k) el contenido no se estire horriblemente */}
-                <div className="mx-auto max-w-7xl">
-                    {children}
-                </div>
-                
+                {/* A. LA BARRA SUPERIOR 
+                    Al estar dentro de flex-col y primero, se queda arriba.
+                */}
+                <Topbar />
+
+                {/* B. ÁREA DE CONTENIDO (Debajo del Topbar) 
+                    flex-1: Toma toda la altura sobrante (Pantalla - Altura del Topbar)
+                    overflow-y-auto: Aquí es donde ocurre el SCROLL. Solo se mueve esto, 
+                                        el Topbar y el Sidebar se quedan quietos.
+                */}
+                <main className="flex-1 overflow-y-auto transition-all duration-300 ease-in-out scroll-smooth">
+                    
+                    {/* Contenedor para márgenes internos */}
+                    <div className="p-4 md:p-8">
+                        
+                        {/* Limitador de ancho para pantallas gigantes */}
+                        <div className="mx-auto max-w-7xl animate-fade-in">
+                            {children}
+                        </div>
+                        
+                    </div>
+                </main>
+
             </div>
-        </main>
 
         </div>
     );

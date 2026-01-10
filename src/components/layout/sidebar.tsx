@@ -4,12 +4,22 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { menuItems } from "@/src/config/menu-config";
+import Image from "next/image"; // <--- Agrega esto junto a los otros imports
 
 // --- PrimeReact ---
 import { Sidebar as PrimeSidebar } from 'primereact/sidebar'; // Renombramos para no confundir
 import { Button } from 'primereact/button';
 import { Avatar } from 'primereact/avatar';
 import { Ripple } from 'primereact/ripple';
+//-- fuente del logo ---
+import { Poppins } from "next/font/google";
+
+// Configuramos la fuente solo para usarla aquí
+const logoFont = Poppins({
+    subsets: ["latin"],
+    weight: ["500", "700", "900"], // Cargamos Medium, Bold y Black
+    display: "swap", // <--- Asegura que el texto se vea inmediato con una fuente básica y luego cambie a Poppins
+});
 
 export default function Sidebar() {
     const [mobileVisible, setMobileVisible] = useState(false);
@@ -64,11 +74,21 @@ function SidebarContent() {
         <div className="flex flex-col h-full">
             {/* 1. HEADER */}
             <div className="flex items-center gap-3 p-6 h-24 border-b border-gray-50">
-                <div className="bg-teal-500 p-2 rounded-lg shadow-md shadow-teal-200">
-                    <i className="pi pi-verified text-white text-xl"></i>
+                {/* --- AQUÍ ESTÁ EL CAMBIO --- */}
+                <div className="relative w-15 h-15 shrink-0">
+                    <Image 
+                        src="/logo-bg.png"  // <--- Asegúrate que el nombre coincida con el de la carpeta public
+                        alt="Logo"
+                        fill
+                        className="object-contain" // Esto asegura que el logo se vea entero sin recortarse
+                        priority // Carga la imagen de inmediato
+                    />
                 </div>
+                {/* --------------------------- */}
                 <div>
-                    <h1 className="font-bold text-2xl text-gray-800 tracking-tight">ReadyPOS</h1>
+                    <h1 className={`${logoFont.className} text-3xl font-black tracking-tight select-none cursor-default text-[#924f9f]`}>
+                        ready <span className="font-bold text-[#23b1af]">POS</span>
+                    </h1>
                 </div>
             </div>
 
