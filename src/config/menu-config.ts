@@ -16,7 +16,7 @@ export interface MenuItem {
     },
     {
         title: "Ventas",
-        href: "/pos",
+        href: "/venta",
         icon: "pi pi-shopping-cart",
     },
     {
