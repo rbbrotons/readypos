@@ -1,14 +1,132 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model caja {
+  id_caja             Int          @id @default(autoincrement())
+  fecha               DateTime?    @db.Timestamp(6)
+  id_usuario_apertura Int?
+  id_usuario_cierre   Int?
+  efectivo_inicial    Float?
+  efectivo_teorico    Float?
+  efectivo_contado    Float?
+  diferencia          Float?
+  hora_apertura       DateTime?    @db.Time(6)
+  hora_cierre         DateTime?    @db.Time(6)
+  estado              estado_caja?
+  venta               venta[]
+}
+
+model categoria {
+  id_categoria     Int         @id @default(autoincrement())
+  nombre_categoria String?     @db.VarChar(50)
+  productos        productos[]
+}
+
+model compra {
+  id_compra      Int              @id @default(autoincrement())
+  fecha_recibido DateTime?        @db.Timestamp(6)
+  detalle_compra detalle_compra[]
+}
+
+model detalle_compra {
+  id_detalle    Int        @id @default(autoincrement())
+  cantidad      Float?
+  precio_compra Float?
+  id_compra     Int?
+  id_producto   Int?
+  compra        compra?    @relation(fields: [id_compra], references: [id_compra], onDelete: NoAction, onUpdate: NoAction)
+  productos     productos? @relation(fields: [id_producto], references: [id_producto], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model detalle_venta {
+  id_detalle        Int        @id @default(autoincrement())
+  cantidad_producto Float?
+  precio_venta      Float?
+  id_venta          Int?
+  id_producto       Int?
+  productos         productos? @relation(fields: [id_producto], references: [id_producto], onDelete: NoAction, onUpdate: NoAction)
+  venta             venta?     @relation(fields: [id_venta], references: [id_venta], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model historial_precio_venta {
+  id_historial Int        @id @default(autoincrement())
+  id_producto  Int?
+  precio       Float?
+  valido_desde DateTime?  @db.Timestamp(6)
+  valido_hasta DateTime?  @db.Timestamp(6)
+  productos    productos? @relation(fields: [id_producto], references: [id_producto], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model marca {
+  id_marca     Int         @id @default(autoincrement())
+  nombre_marca String?     @db.VarChar(100)
+  activo       Boolean?
+  productos    productos[]
+}
+
+model productos {
+  id_producto            Int                      @id @default(autoincrement())
+  nombre_producto        String?                  @db.VarChar(50)
+  descripcion            String?                  @db.VarChar(250)
+  precio_venta           Float?
+  cantidad               Float?
+  unidad_medida          String?                  @db.VarChar(10)
+  vencimiento1           DateTime?                @db.Timestamp(6)
+  vencimiento2           DateTime?                @db.Timestamp(6)
+  activo                 Boolean?
+  stock_minimo           Float?
+  codigo_barras          String?                  @db.VarChar(50)
+  id_categoria           Int?
+  id_marca               Int?
+  detalle_compra         detalle_compra[]
+  detalle_venta          detalle_venta[]
+  historial_precio_venta historial_precio_venta[]
+  categoria              categoria?               @relation(fields: [id_categoria], references: [id_categoria], onDelete: NoAction, onUpdate: NoAction)
+  marca                  marca?                   @relation(fields: [id_marca], references: [id_marca], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model usuario {
+  id_usuario        Int          @id @default(autoincrement())
+  nombre_empleado   String?      @db.VarChar(50)
+  apellido_empleado String?      @db.VarChar(50)
+  usuario           String?      @db.VarChar(50)
+  contrase_a        String?      @map("contraseña") @db.VarChar(50)
+  activo            Boolean?
+  rol               rol_usuario?
+  venta             venta[]
+}
+
+model venta {
+  id_venta      Int             @id @default(autoincrement())
+  id_caja       Int?
+  fecha_venta   DateTime?       @db.Timestamp(6)
+  hora_venta    DateTime?       @db.Time(6)
+  id_usuario    Int?
+  pago          forma_pago?
+  detalle_venta detalle_venta[]
+  caja          caja?           @relation(fields: [id_caja], references: [id_caja], onDelete: NoAction, onUpdate: NoAction)
+  usuario       usuario?        @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+}
+
+enum estado_caja {
+  ABIERTA
+  CERRADA
+}
+
+enum forma_pago {
+  EFECTIVO
+  TRANSFERENCIA
+  TARJETA_CREDITO
+  QR
+}
+
+enum rol_usuario {
+  ADMIN
+  EMPLEADO
 }
