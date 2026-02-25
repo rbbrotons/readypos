@@ -40,7 +40,11 @@ export default function CentroLayout({
                     <div className="p-4 md:p-8">
                         
                         {/* Limitador de ancho para pantallas gigantes */}
-                        <div className="mx-auto max-w-7xl animate-fade-in">
+                        {/* w-full: Ocupa el 100% en móviles.
+                            max-w-[1400px]: En pantallas gigantes no deja que pase de 1400px (ideal para lectura).
+                            lg:px-8: Da más aire a los costados en pantallas grandes.
+                        */}
+                        <div className="w-full max-w-350 mx-auto animate-fade-in px-4 lg:px-8">
                             {children}
                         </div>
                         
