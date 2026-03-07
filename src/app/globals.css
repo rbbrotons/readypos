@@ -18,6 +18,11 @@
     --foreground: #ededed;
   }
 }
+@layer base {
+  .p-button {
+    all: revert-layer; /* Obliga a Tailwind a soltar el botón y que PrimeReact lo pinte */
+  }
+}
 
 body {
   background: var(--background);
