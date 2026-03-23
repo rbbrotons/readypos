@@ -113,8 +113,8 @@ export default function CardLog() {
                     id="username"
                     value={username}
                     onChange={(e) => setUserName(e.target.value)}
-                    className="w-full border border-gray-300 rounded-md py-1"
-                    required //obligatorio para que el formulario no se envie vacio
+                    className="w-full border border-gray-300 rounded-md p-2 focus:border-[#23b1af] outline-none transition-all"
+                    required
                   />
                 </div>
 
@@ -128,8 +128,21 @@ export default function CardLog() {
                     onChange={(e) => setPassword(e.target.value)}
                     toggleMask
                     feedback={false}
-                    className="w-full h-full"
-                    inputClassName="w-84 h-full border border-gray-300 rounded-md py-1.5"
+                    style={{ width: '100%' }} 
+                    className="w-full"
+                    inputClassName="w-full p-2 border border-gray-300 rounded-md focus:border-[#23b1af] outline-none transition-all"
+                    pt={{
+                        root: { className: 'w-full relative' },
+                        input: { 
+                            className: 'w-full p-2 border border-gray-300 rounded-md focus:border-[#23b1af] outline-none transition-all' 
+                        },
+                        showIcon: { 
+                            className: 'absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400' 
+                        },
+                        hideIcon: { 
+                            className: 'absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400' 
+                        }
+                    }}
                     required
                   />
                 </div>

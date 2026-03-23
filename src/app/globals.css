@@ -32,6 +32,22 @@
     padding-bottom: 1rem;
 }
 
+/* Corrección para el círculo del InputSwitch de PrimeReact */
+.p-inputswitch .p-inputswitch-slider:before {
+    margin-top: -0.6rem; /* Ajusta esto si el círculo se ve muy arriba o abajo */
+    left: 0.25rem;
+}
+
+.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider:before {
+    transform: translateX(1.25rem); /* Ajusta el recorrido del círculo */
+}
+
+/* Ajuste para el estado de reposo (centrado) */
+.p-float-label label {
+    transition: all 0.2s ease;
+    pointer-events: none;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
