@@ -6,6 +6,9 @@ import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 interface ConfirmModalProps {
     message: string;
     header: string;
+    icon?: string;
+    acceptLabel?: string;
+    rejectLabel?: string;
     onAccept: () => void;
     onReject?: () => void;
 }
